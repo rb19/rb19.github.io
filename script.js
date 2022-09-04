@@ -18,10 +18,11 @@ function fileParser(input){
       var content = readerEvent.target.result;
       document.getElementById("content").innerHTML = "Raw CSV data: " + content;
       //document.write(content);
-      console.log(content);
+      //console.log(content);
 
-      let data = CSVToArray(content);
-      document.getElementById("data").innerHTML = JSON.stringify(data);
+      let data = createBracket(content);
+      // Can't read the data from this line, moved to createBracket()
+      // document.getElementById("data").innerHTML = JSON.stringify(data);
     }
 
     // Testing console output.
@@ -34,33 +35,6 @@ function fileParser(input){
   }
 
 }
-
-// function csvToArray(str, delimiter = ",") {
-//   // slice from start of text to the first \n index
-//   // use split to create an array from string by delimiter
-//   const headers = str.slice(0, str.indexOf("\n")).split(delimiter);
-
-//   // slice from \n index + 1 to the end of the text
-//   // use split to create an array of each csv value row
-//   const rows = str.slice(str.indexOf("\n") + 1).split("\n");
-
-//   // Map the rows
-//   // split values from each row into an array
-//   // use headers.reduce to create an object
-//   // object properties derived from headers:values
-//   // the object passed as an element of the array
-//   const arr = rows.map(function (row) {
-//     const values = row.split(delimiter);
-//     const el = headers.reduce(function (object, header, index) {
-//       object[header] = values[index];
-//       return object;
-//     }, {});
-//     return el;
-//   });
-
-//   // return the array
-//   return arr;
-// }
 
 function CSVToArray( strData, strDelimiter ){
   // Check to see if the delimiter is defined. If not,
@@ -82,7 +56,6 @@ function CSVToArray( strData, strDelimiter ){
       "gi"
       );
 
-
   // Create an array to hold our data. Give the array
   // a default empty first row.
   var arrData = [[]];
@@ -90,7 +63,6 @@ function CSVToArray( strData, strDelimiter ){
   // Create an array to hold our individual pattern
   // matching groups.
   var arrMatches = null;
-
 
   // Keep looping over the regular expression matches
   // until we can no longer find a match.
@@ -135,14 +107,125 @@ function CSVToArray( strData, strDelimiter ){
 
       }
 
-
       // Now that we have our value string, let's add
       // it to the data array.
       arrData[ arrData.length - 1 ].push( strMatchedValue );
   }
 
-  // Return the parsed data.
   return( arrData );
+}
+
+function isInt(n) {
+  return n % 1 === 0;
+}
+
+function isFloat(n) {
+  return n % 1 !== 0;
+}
+
+function countCars(arrayData){
+  let carsTotal = 0;
+  for (let i = 1; i < arrayData.length; i++) {
+    num = parseInt(arrayData[i][1]);
+    // TEST: Print out the number of cars in each row
+    //console.log(arrData[i][1]);
+    carsTotal = carsTotal + num; 
+  }
+  return carsTotal;
+}
+
+function createBracket(content){
+
+  let arrData = CSVToArray(content);
+  //document.getElementById("data").innerHTML = JSON.stringify(arrData);
+
+  // Return the number of competitors.
+  console.log ('Number of competitors: ' + arrData.length);
+
+  // Determine total number of cars.
+  carsTotal = countCars(arrData);
+  //console.log(carsTotal);
+
+  // Check if cars is NaN. This checks for empty cells and/or rows.
+  if (isNaN(carsTotal)){
+    alert('ERROR! There is an empty cell or blank row. Please check the CSV file and try again.');
+  }
+
+  // Determine if using a 2 lane or 4 lane.
+  if (carsTotal > 200){
+    console.log('Use the 4 wide lane track.')
+  }
+  else {
+    console.log('You can use the 2 lane track.')
+  }
+  
+  // Return the number of cars.
+  console.log('Number of cars: ' + carsTotal);
+
+  // Determine the number of brackets
+  var totalBrackets = Math.ceil(carsTotal/16);
+  // var bracketComp = [];
+  // for (var k = 1; k < bracketsNumber; k++) {
+  //   bracketComp[k]=[];
+  // }
+  var bracketComp = {};
+  for (var i=1; i<totalBrackets+1; i++){
+    var bracketNumber = 'bracket ' + i;
+    bracketComp[bracketNumber] = [];
+  }
+  console.log(bracketComp);
+  console.log('Number of brackets: ' + totalBrackets);
+
+  // Array to dump odd ratios into
+  var floatArray = [];
+
+  // Split cars into each bracket.
+  for (let i = 1; i < arrData.length; i++) {
+    //document.getElementById("data").innerHTML = JSON.stringify(arrData[i]);
+    // Uncomment below to test output read
+    // console.log(arrData[i][1]);
+
+    let playerName = arrData[i][0];
+
+    // Convert player's cars to an integer
+    let playerCars = parseInt(arrData[i][1]);
+    // Ratio of cars to brackets
+    var carRatio = playerCars/totalBrackets;
+    
+
+    if (isInt(carRatio)){
+      // for (let j = 1; j < bracketsNumber; j++){
+      //   for (let l = 1; l < carRatio; l++){
+      //     bracket[j].push(arrData[i][0]);
+      //   }
+      // }
+      // bracketComp.forEach(function(number){
+      //   bracketComp[number].push(arrData[i][0]);
+      // });
+      for (let property in bracketComp){
+        //for (let l = 1; l < carRatio; l++){
+          bracketComp[property].push(playerName);
+          // Object.assign(bracketComp,arrData[i][0]);
+        //}
+      }
+    }
+    else if(isFloat(carRatio)){
+      // This will be split in the next split step.
+      floatArray.push(arrData[i]);
+    }
+    else {
+      alert('ERROR! Something went wrong!');
+    }
+  }
+  console.log(bracketComp);
+  console.log(floatArray);
+  // Call bracket randomizer
+
+}
+
+// Randomize the bracket. Make sure that people are not facing themselves in first round
+function bracketRandomizer (){
+
 }
 
 function fileSelect() {
