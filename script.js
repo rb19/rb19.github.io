@@ -226,6 +226,14 @@ function createBracket(content){
     startingBrackets[i % startingBrackets.length].push(remainderBucket[i]);
   }
 
+  // Randomize the bracket before shuffling. Otherwise players will face the same opponents every time.
+  for (let i = 0; i < startingBrackets.length; i++) {
+    for (let j = 0; j < startingBrackets[i].length - 1; j++) {
+        const k = Math.floor(Math.random() * (j + 1));
+        [ startingBrackets[i][j], startingBrackets[i][k] ] = [ startingBrackets[i][k], startingBrackets[i][j] ];
+    }
+  }
+
   // Check every other player for match conflicts. If there is one, swap with last element.
   for (let i = 0; i < startingBrackets.length; i++) {
     for (let j = 0; j < startingBrackets[i].length - 1; j++) {
@@ -240,12 +248,8 @@ function createBracket(content){
             }
         }
     }
-}
+  }
 
-  console.log("Float Bucket:");
-  console.log(floatBucket);
-  console.log("Remainder Bucket:");
-  console.log(remainderBucket);
   console.log("startingBrackets:")
   console.log(startingBrackets);
 
