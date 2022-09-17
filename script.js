@@ -226,6 +226,22 @@ function createBracket(content){
     startingBrackets[i % startingBrackets.length].push(remainderBucket[i]);
   }
 
+  // Check every other player for match conflicts. If there is one, swap with last element.
+  for (let i = 0; i < startingBrackets.length; i++) {
+    for (let j = 0; j < startingBrackets[i].length - 1; j++) {
+        if (j % 2 != 0){
+            continue;
+        }
+        else {
+            if (startingBrackets[i][j] == startingBrackets[i][j + 1]) {
+                if (j + 1 < startingBrackets[i].length) {
+                [ startingBrackets[i][j + 1], startingBrackets[i][startingBrackets[i].length-1] ] = [ startingBrackets[i][startingBrackets[i].length-1], startingBrackets[i][j + 1] ];
+                }        
+            }
+        }
+    }
+}
+
   console.log("Float Bucket:");
   console.log(floatBucket);
   console.log("Remainder Bucket:");
