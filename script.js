@@ -137,14 +137,13 @@ function countCars(arrayData){
 function createBracket(content){
 
   let arrData = CSVToArray(content);
-  //document.getElementById("data").innerHTML = JSON.stringify(arrData);
+  //let arrData = [['Player', 'Cars'],['Al H','8'], ['Dave H','6'], ['Tom','5'], ['Ray','10'], ['Jeremy','4'], ['Jim','1'], ['Heather','3'], ['Scott','5'], ['John','6']];
 
   // Return the number of competitors.
   console.log ('Number of competitors: ' + arrData.length);
 
   // Determine total number of cars.
   carsTotal = countCars(arrData);
-  //console.log(carsTotal);
 
   // Check if cars is NaN. This checks for empty cells and/or rows.
   if (isNaN(carsTotal)){
@@ -164,62 +163,75 @@ function createBracket(content){
 
   // Determine the number of brackets
   var totalBrackets = Math.ceil(carsTotal/16);
-  // var bracketComp = [];
-  // for (var k = 1; k < bracketsNumber; k++) {
-  //   bracketComp[k]=[];
-  // }
-  var bracketComp = {};
-  for (var i=1; i<totalBrackets+1; i++){
-    var bracketNumber = 'bracket ' + i;
-    bracketComp[bracketNumber] = [];
-  }
-  console.log(bracketComp);
   console.log('Number of brackets: ' + totalBrackets);
 
-  // Array to dump odd ratios into
-  var floatArray = [];
+  // Array to contain all brackets
+  var startingBrackets = [];
 
-  // Split cars into each bracket.
+  // For each bracket...
+  for (i = 0; i < totalBrackets; i++){
+    const bracket = [];
+    startingBrackets.push(bracket);
+  }
+  // Alternative method to store. Uncomment this if the nested array method doesn't work.
+  // var bracketComp = {};
+  // for (var i=0; i<totalBrackets; i++){
+  //   var bracketNumber = 'bracket ' + (i + 1);
+  //   bracketComp[bracketNumber] = [];
+  // }
+  // console.log("Starting brackets: ");
+  // console.log(bracketComp);
+ 
+  const floatBucket = [];
+  // Find the ratios, and push players into buckets. 
+  // i=1 because this assumes the first line is a header.
+  const intBucket = [];
+  const remainderBucket = [];
   for (let i = 1; i < arrData.length; i++) {
-    //document.getElementById("data").innerHTML = JSON.stringify(arrData[i]);
-    // Uncomment below to test output read
-    // console.log(arrData[i][1]);
+    const player = arrData[i];
+    const playerName = arrData[i][0];
+    const playerCars = parseInt(arrData[i][1]);
 
-    let playerName = arrData[i][0];
-
-    // Convert player's cars to an integer
-    let playerCars = parseInt(arrData[i][1]);
     // Ratio of cars to brackets
     var carRatio = playerCars/totalBrackets;
-    
 
     if (isInt(carRatio)){
-      // for (let j = 1; j < bracketsNumber; j++){
-      //   for (let l = 1; l < carRatio; l++){
-      //     bracket[j].push(arrData[i][0]);
-      //   }
-      // }
-      // bracketComp.forEach(function(number){
-      //   bracketComp[number].push(arrData[i][0]);
-      // });
-      for (let property in bracketComp){
-        //for (let l = 1; l < carRatio; l++){
-          bracketComp[property].push(playerName);
-          // Object.assign(bracketComp,arrData[i][0]);
-        //}
+      for (j = 0; j < carRatio; j++){
+        intBucket.push(playerName);
       }
     }
     else if(isFloat(carRatio)){
       // This will be split in the next split step.
-      floatArray.push(arrData[i]);
+      const quotient = Math.floor(playerCars/totalBrackets);
+      const remainder = playerCars%totalBrackets;
+      for (j = 0; j < quotient; j++){
+        floatBucket.push(playerName);
+      }
+      for (k = 0; k < remainder; k++){
+        remainderBucket.push(playerName);
+      } 
     }
     else {
       alert('ERROR! Something went wrong!');
     }
   }
-  console.log(bracketComp);
-  console.log(floatArray);
-  // Call bracket randomizer
+
+  // Push int bucket into brackets
+  for (k = 0; k < startingBrackets.length; k++){
+    startingBrackets[k].push(...intBucket);
+    startingBrackets[k].push(...floatBucket);
+  }
+
+  for (let i = 0; i < remainderBucket.length; i++){
+    startingBrackets[i % startingBrackets.length].push(remainderBucket[i]);
+  }
+
+  console.log("Float Bucket:");
+  console.log(floatBucket);
+  console.log("Remainder Bucket:");
+  console.log(remainderBucket);
+  console.log("startingBrackets:")
+  console.log(startingBrackets);
 
 }
 
