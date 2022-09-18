@@ -1,1 +1,57 @@
-Hello World
+<!DOCTYPE html>
+<html>
+<body>
+<h2>LJLRC Bracket Generator Test</h2>
+
+<script src="./script.js"></script>
+
+<style>
+    table {
+        /* border-collapse: collapse;
+        width: 100%; */
+        margin-bottom: 15px;
+    }
+
+    /*th, td {
+        text-align: left;
+        padding: 8px;
+    } */
+
+    td:nth-child(odd) {background-color: #ededed;}
+</style>
+
+<input id="fileUpload" type="file" accept=".csv" hidden>
+<p>Click the button below to import a CSV file.</p>
+<p>The CSV should only have two columns: <b>Player names</b> and <b>Car count</b></p>
+<p>The first line of the CSV should be: <i>Player name</i> and <i>Car count</i></p>
+<button onclick="fileSelect()">Import CSV</button>
+<br>
+<br>
+<hr>
+<div>
+    <p style="display:inline-block">
+        <b>Enter the Race Class Name here:</b>
+    </p>
+    <input type="text" value="">
+    <br>
+    <p style="display:inline-block">
+        <b>Number of cars in this race class:</b>
+    </p>
+    <p id="carCount" style="display:inline-block">
+    </p>
+    <br>
+    <p style="display:inline-block">
+        <b>Track to use:</b>
+    </p>
+    <p id="track" style="display:inline-block">
+    </p>
+</div>
+<hr>
+<div>
+    <p>
+        Pages with brackets will be displayed below:
+    </p>
+</div>
+
+</body>
+</html>
