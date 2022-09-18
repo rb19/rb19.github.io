@@ -4,11 +4,6 @@ function fileParser(input){
     // Set up file reference
     var file = e.target.files[0]; 
 
-    // TEST: Test file type reading
-    // let fileName = 'File name: ' + file.name;
-    // let fileSize = 'File size: ' + file.size;
-    // let fileType = 'File type: ' + file.type;
-
     // Setting up FileReader API
     let csvReader = new FileReader();
     csvReader.readAsText(file);
@@ -16,23 +11,22 @@ function fileParser(input){
     // Tell csvReader to spit out contents
     csvReader.onload = readerEvent => {
       var content = readerEvent.target.result;
-      // TEST
-      //document.getElementById("content").innerHTML = "Raw CSV data: " + content;
-      //document.write(content);
-      //console.log(content);
 
       let data = createBracket(content);
 
-       // create generic table elements
-      const tbl = document.createElement("table");
+      // create generic table elements
+      //const tbl = document.createElement("table");
+      const linebreak = document.createElement("br");
     
       for (i = 0; i < data.length; i++) {
+        const tbl = document.createElement("table");
         for (j = 0; j < 18; j++) {
           const row = document.createElement("tr");
           if (j == 0) {
             // Make the Page header here, where Page is i+1
             console.log("I am the Page Header # " + (i + 1));
             const pageHeader = document.createElement("th");
+            //pageHeader.setAttribute("border", "3");
             pageHeader.setAttribute("colspan", "2");
             const pageHeaderText = document.createTextNode(`Page ${i +1}`);
             pageHeader.appendChild(pageHeaderText);
@@ -77,22 +71,11 @@ function fileParser(input){
           }
           tbl.appendChild(row);
         }
+        document.body.appendChild(tbl);
+        tbl.setAttribute("border", "3");
       }
-      document.body.appendChild(tbl);
-      tbl.setAttribute("border", "2");
-
-      //console.log(data[0]);
-      // Can't read the data from this line, moved to createBracket()
-      // document.getElementById("data").innerHTML = JSON.stringify(data);
     }
 
-    // TEST: Testing console output.
-    // console.log(fileName);
-    // console.log(fileSize);
-    // console.log(fileType);
-
-    // TEST: Passing variables into HTML.
-    // document.getElementById("demo").innerHTML = fileName;
   }
 
 }
@@ -188,8 +171,6 @@ function countCars(arrayData){
   let carsTotal = 0;
   for (let i = 1; i < arrayData.length; i++) {
     num = parseInt(arrayData[i][1]);
-    // TEST: Print out the number of cars in each row
-    //console.log(arrData[i][1]);
     carsTotal = carsTotal + num; 
   }
   return carsTotal;
@@ -198,8 +179,6 @@ function countCars(arrayData){
 function createBracket(content){
 
   let arrData = CSVToArray(content);
-  //let arrData = [['Player', 'Cars'],['Al H','8'], ['Dave H','6'], ['Tom','5'], ['Ray','10'], ['Jeremy','4'], ['Jim','1'], ['Heather','3'], ['Scott','5'], ['John','6']];
-
   // Return the number of competitors.
   console.log ('Number of competitors: ' + arrData.length);
 
@@ -214,11 +193,15 @@ function createBracket(content){
   // Determine if using a 2 lane or 4 lane.
   if (carsTotal > 200){
     console.log('Use the 4 wide lane track.')
+    document.getElementById("track").innerHTML = "4 lane track";
+    document.getElementById("carCount").innerHTML = `${carsTotal}`;
   }
   else {
     console.log('You can use the 2 lane track.')
+    document.getElementById("track").innerHTML = "2 lane track";
+    document.getElementById("carCount").innerHTML = `${carsTotal}`;
   }
-  
+
   // Return the number of cars.
   console.log('Number of cars: ' + carsTotal);
 
@@ -234,14 +217,6 @@ function createBracket(content){
     const bracket = [];
     startingBrackets.push(bracket);
   }
-  // Alternative method to store. Uncomment this if the nested array method doesn't work.
-  // var bracketComp = {};
-  // for (var i=0; i<totalBrackets; i++){
-  //   var bracketNumber = 'bracket ' + (i + 1);
-  //   bracketComp[bracketNumber] = [];
-  // }
-  // console.log("Starting brackets: ");
-  // console.log(bracketComp);
  
   const floatBucket = [];
   // Find the ratios, and push players into buckets. 
@@ -311,15 +286,7 @@ function createBracket(content){
     }
   }
 
-  // console.log("startingBrackets:")
-  // console.log(startingBrackets);
-
   return startingBrackets;
-}
-
-// Randomize the bracket. Make sure that people are not facing themselves in first round
-function bracketRandomizer (){
-
 }
 
 function fileSelect() {
