@@ -4,10 +4,10 @@ function fileParser(input){
     // Set up file reference
     var file = e.target.files[0]; 
 
-    // Test file type reading
-    let fileName = 'File name: ' + file.name;
-    let fileSize = 'File size: ' + file.size;
-    let fileType = 'File type: ' + file.type;
+    // TEST: Test file type reading
+    // let fileName = 'File name: ' + file.name;
+    // let fileSize = 'File size: ' + file.size;
+    // let fileType = 'File type: ' + file.type;
 
     // Setting up FileReader API
     let csvReader = new FileReader();
@@ -16,22 +16,83 @@ function fileParser(input){
     // Tell csvReader to spit out contents
     csvReader.onload = readerEvent => {
       var content = readerEvent.target.result;
-      document.getElementById("content").innerHTML = "Raw CSV data: " + content;
+      // TEST
+      //document.getElementById("content").innerHTML = "Raw CSV data: " + content;
       //document.write(content);
       //console.log(content);
 
       let data = createBracket(content);
+
+       // create generic table elements
+      const tbl = document.createElement("table");
+    
+      for (i = 0; i < data.length; i++) {
+        for (j = 0; j < 18; j++) {
+          const row = document.createElement("tr");
+          if (j == 0) {
+            // Make the Page header here, where Page is i+1
+            console.log("I am the Page Header # " + (i + 1));
+            const pageHeader = document.createElement("th");
+            pageHeader.setAttribute("colspan", "2");
+            const pageHeaderText = document.createTextNode(`Page ${i +1}`);
+            pageHeader.appendChild(pageHeaderText);
+            row.appendChild(pageHeader);
+          } else if (j == 1) {
+            // Create a td of "Position"
+            // Create a td of "Player"
+            // Place these td's into a tr row
+            console.log("This is where the position and player header goes");
+            const positionHeader = document.createElement("th");
+            const playerHeader = document.createElement("th");
+            const positionHeaderText = document.createTextNode("Position");
+            const playerHeaderText = document.createTextNode("Player");
+            positionHeader.appendChild(positionHeaderText);
+            playerHeader.appendChild(playerHeaderText);
+            row.appendChild(positionHeader);
+            row.appendChild(playerHeader);
+          } else if (j > 1 && j <= data[i].length + 1) {
+            // Create a td for each position where the position is j-1 
+            // Create a td for each viable player, and place the name
+            const positionCell = document.createElement("td");
+            const playerCell = document.createElement("td");
+            console.log("Position # " + j + " There's a player here!");
+            const positionText = document.createTextNode(`${j - 1}`);
+            const playerText = document.createTextNode(data[i][j-2]);
+            positionCell.appendChild(positionText);
+            playerCell.appendChild(playerText);
+            row.appendChild(positionCell);
+            row.appendChild(playerCell);
+          } else if (j > 1 && j > data[i].length + 1) {
+            // Create a td for each position where the position is j-1 
+            // Create a td with an empty space
+            console.log("Position # " + j + " NO PLAYER!");
+            const positionCell = document.createElement("td");
+            const playerCell = document.createElement("td");
+            const positionText = document.createTextNode(`${j - 1}`);
+            const playerText = document.createTextNode("");
+            positionCell.appendChild(positionText);
+            playerCell.appendChild(playerText);
+            row.appendChild(positionCell);
+            row.appendChild(playerCell);
+          }
+          tbl.appendChild(row);
+        }
+      }
+      document.body.appendChild(tbl);
+      tbl.setAttribute("border", "2");
+
+      //console.log(data[0]);
       // Can't read the data from this line, moved to createBracket()
       // document.getElementById("data").innerHTML = JSON.stringify(data);
     }
 
-    // Testing console output.
-    console.log(fileName);
-    console.log(fileSize);
-    console.log(fileType);
+    // TEST: Testing console output.
+    // console.log(fileName);
+    // console.log(fileSize);
+    // console.log(fileType);
 
-    // Passing variables into HTML.
-    document.getElementById("demo").innerHTML = fileName;
+    // TEST: Passing variables into HTML.
+    // document.getElementById("demo").innerHTML = fileName;
   }
 
 }
@@ -250,9 +311,10 @@ function createBracket(content){
     }
   }
 
-  console.log("startingBrackets:")
-  console.log(startingBrackets);
+  // console.log("startingBrackets:")
+  // console.log(startingBrackets);
 
+  return startingBrackets;
 }
 
 // Randomize the bracket. Make sure that people are not facing themselves in first round
