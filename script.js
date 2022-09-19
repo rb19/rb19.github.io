@@ -15,8 +15,9 @@ function fileParser(input){
       let data = createBracket(content);
 
       // create generic table elements
-      //const tbl = document.createElement("table");
       const linebreak = document.createElement("br");
+      // clear previous tables if any exist
+      document.getElementById("brackets").innerHTML = "";
     
       for (i = 0; i < data.length; i++) {
         const tbl = document.createElement("table");
@@ -71,7 +72,7 @@ function fileParser(input){
           }
           tbl.appendChild(row);
         }
-        document.body.appendChild(tbl);
+        document.getElementById("brackets").appendChild(tbl);
         tbl.setAttribute("border", "3");
       }
     }
