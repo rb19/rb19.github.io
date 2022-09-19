@@ -6,25 +6,34 @@
 <script src="./script.js"></script>
 
 <style>
-    table {
-        /* border-collapse: collapse;
-        width: 100%; */
-        margin-bottom: 15px;
+    input {
+        text-align: left;
     }
 
-    /*th, td {
-        text-align: left;
-        padding: 8px;
-    } */
+    table {
+        margin-bottom: 35px;
+    }
+
+    td {
+        font-size: 16px;
+        text-align: center;
+    }
 
     td:nth-child(odd) {background-color: #ededed;}
-</style>
 
-<input id="fileUpload" type="file" accept=".csv" hidden>
-<p>Click the button below to import a CSV file.</p>
-<p>The CSV should only have two columns: <b>Player names</b> and <b>Car count</b></p>
-<p>The first line of the CSV should be: <i>Player name</i> and <i>Car count</i></p>
-<button onclick="fileSelect()">Import CSV</button>
+    th {
+        font-size: 20px;
+        text-align: center;
+    }
+
+</style>
+<div>
+    <input id="fileUpload" type="file" accept=".csv" hidden>
+    <p>Click the button below to import a CSV file.</p>
+    <p>The CSV should only have two columns: <b>Player names</b> and <b>Car count</b></p>
+    <p>The first line of the CSV should be: <i>Player name</i> and <i>Car count</i></p>
+    <button onclick="fileSelect()">Import CSV</button>
+</div>
 <br>
 <br>
 <hr>
