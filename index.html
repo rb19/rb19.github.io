@@ -6,31 +6,45 @@
 <script src="./script.js"></script>
 
 <style>
-    table {
-        /* border-collapse: collapse;
-        width: 100%; */
-        margin-bottom: 15px;
+    input {
+        text-align: left;
     }
 
-    /*th, td {
-        text-align: left;
-        padding: 8px;
-    } */
+    table {
+        margin-bottom: 35px;
+    }
+
+    td {
+        font-size: 16px;
+        text-align: center;
+    }
 
     td:nth-child(odd) {background-color: #ededed;}
-</style>
 
-<input id="fileUpload" type="file" accept=".csv" hidden>
-<p>Click the button below to import a CSV file.</p>
-<p>The CSV should only have two columns: <b>Player names</b> and <b>Car count</b></p>
-<p>The first line of the CSV should be: <i>Player name</i> and <i>Car count</i></p>
-<button onclick="fileSelect()">Import CSV</button>
-<br>
+    th {
+        font-size: 20px;
+        text-align: center;
+    }
+
+</style>
+<div>
+    <input id="fileUpload" type="file" accept=".csv" hidden>
+    <p>This is a bracket generator that will take a CSV file containing player names and number of cars and return the pages with players.</p>
+    <p>Instructions to use this bracket generator:</p>
+    <ol>
+        <li>Set up a CSV file for a race class. The CSV should only have two columns: <b>Player names</b> and <b>Car count</b>. The first line of the CSV should be: <i>Player name</i> and <i>Car count</i></li>
+        <li>Click the button below to import the CSV file. This will run the code and return pages and their brackets.</li>
+        <li>Enter the name of the race class below.</li>
+        <li>Print or screenshot this page to save the brackets.</li>
+        <li>Repeat until all race classes have been filled.</li>
+    </ol>
+    <button onclick="fileSelect()">Import CSV</button>
+</div>
 <br>
 <hr>
 <div>
     <p style="display:inline-block">
-        <b>Enter the Race Class Name here:</b>
+        <b>Enter the name of the Race Class here:</b>
     </p>
     <input type="text" value="">
     <br>
@@ -41,16 +55,13 @@
     </p>
     <br>
     <p style="display:inline-block">
-        <b>Track to use:</b>
+        <b>Suggested track to use:</b>
     </p>
     <p id="track" style="display:inline-block">
     </p>
 </div>
 <hr>
-<div>
-    <p>
-        Pages with brackets will be displayed below:
-    </p>
+<div id="brackets">
 </div>
 
 </body>
