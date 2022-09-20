@@ -127,7 +127,7 @@ function fileParser(input){
         // Now that table has been created, append this to a hardcoded div.
         document.getElementById("brackets").appendChild(tbl);
         // Aesthetic border thickness. Change as needed.
-        tbl.setAttribute("border", "3");
+        tbl.setAttribute("border", "2");
       }
     }
   }
