@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <body>
-<h2>LJLRC Bracket Generator Test</h2>
+<h1 style="text-align:center;font-family: 'Roboto', Helvetica, sans-serif">LJLRC Bracket Generator Test</h2>
 
 <script src="./script.js"></script>
 
 <style>
     input {
         text-align: left;
+        font-family: 'Roboto', Helvetica, sans-serif;
     }
 
     table {
@@ -19,6 +20,7 @@
     td {
         font-size: 12px;
         text-align: center;
+        font-family: 'Roboto', Helvetica, sans-serif;
     }
 
     td:nth-child(odd) {background-color: #ededed;}
@@ -26,45 +28,72 @@
     th {
         font-size: 16px;
         text-align: center;
+        font-family: 'Roboto', Helvetica, sans-serif;
+    }
+
+    p {
+        font-size: 20px;
+        font-family: 'Roboto', Helvetica, sans-serif;
+    }
+
+    li {
+        text-align: justify; 
+        text-justify: interword;
+        font-size: 18px;
+        font-family: 'Roboto', Helvetica, sans-serif;
+    }
+
+    button{
+        font-family: 'Roboto', Helvetica, sans-serif;
     }
 
 </style>
 <div>
     <input id="fileUpload" type="file" accept=".csv" hidden>
-    <p>This is a bracket generator that will take a CSV file containing player names and number of cars and return the pages with players.</p>
-    <p>Instructions to use this bracket generator:</p>
-    <ol>
-        <li>Set up a CSV file for a race class. The CSV should only have two columns: <b>Player names</b> and <b>Car count</b>. The first line of the CSV should be: <i>Player name</i> and <i>Car count</i></li>
-        <li>Click the button below to import the CSV file. This will run the code and return pages and their brackets.</li>
-        <li>Enter the name of the race class below.</li>
-        <li>Print or screenshot this page to save the brackets.</li>
-        <li>Repeat until all race classes have been filled.</li>
-    </ol>
-    <button onclick="fileSelect()">Import CSV</button>
+    <div style="text-align:center">
+        <p style="text-justify:interword">This is a bracket generator that will take a CSV file containing player names and number of cars and return the pages with players.</p>
+    </div>
+    <hr>
+    <div style="text-align:center">
+        <p style="text-justify:interword">Instructions to use this bracket generator:</p>
+        <ol style="display:inline-block">
+            <li>Set up a CSV file for a race class. The CSV should only have two columns: <b>Player names</b> and <b>Car count</b>. The first line of the CSV should be: <i>Player name</i> and <i>Car count</i></li>
+            <li>Click the button below to import the CSV file. This will run the code and return pages and their brackets.</li>
+            <li>Enter the name of the race class below.</li>
+            <li>Print or screenshot this page to save the brackets.</li>
+            <li>Repeat until all race classes have been filled.</li>
+        </ol>
+    </div>
 </div>
-<br>
 <hr>
 <div>
-    <p style="display:inline-block">
-        <b>Enter the name of the Race Class here:</b>
+    <p style="text-align: center">
+        <b>Race Class:</b>
     </p>
-    <input type="text" value="">
+    <div style="text-align:center">
+        <input type="text" value="" style="font-size: 30px;text-align: center">
+    </div>
+    <div style="text-align:center">
+        <p style="display:inline-block">
+            <b>Number of cars in this race class:</b>
+        </p>
+        <p id="carCount" style="display:inline">
+        </p>
+    </div>
+    <div style="text-align:center">
+        <p style="display:inline-block">
+            <b>Suggested track to use:</b>
+        </p>
+        <p id="track" style="display:inline">
+        </p>
+    </div>
+    <div style="text-align:center">
+        <button onclick="fileSelect()" style="font-size:20px;text-align:center;background-color: #C9F2C9">Click to import CSV</button>
+    </div>
     <br>
-    <p style="display:inline-block">
-        <b>Number of cars in this race class:</b>
-    </p>
-    <p id="carCount" style="display:inline-block">
-    </p>
-    <br>
-    <p style="display:inline-block">
-        <b>Suggested track to use:</b>
-    </p>
-    <p id="track" style="display:inline-block">
-    </p>
 </div>
 <hr>
 <div id="brackets">
 </div>
-
 </body>
 </html>
