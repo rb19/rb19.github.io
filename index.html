@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-<h1 style="text-align:center;font-family: 'Roboto', Helvetica, sans-serif">LJLRC Bracket Generator Test</h2>
+<h1 style="text-align:center;font-family: 'Roboto', Helvetica, sans-serif">LJLRC Bracket Generator</h2>
 
 <script src="./script.js"></script>
 
@@ -12,7 +12,7 @@
     }
 
     table {
-        margin-bottom: 3px;
+        margin-bottom: 5px;
         display: inline-block;
         margin-right: 5px;
     }
@@ -57,16 +57,34 @@
     <div style="text-align:center">
         <p style="text-justify:interword">Instructions to use this bracket generator:</p>
         <ol style="display:inline-block">
-            <li>Set up a CSV file for a race class. The CSV should only have two columns: <b>Player names</b> and <b>Car count</b>. The first line of the CSV should be: <i>Player name</i> and <i>Car count</i></li>
-            <li>Click the button below to import the CSV file. This will run the code and return pages and their brackets.</li>
+            <li>Create a spreadsheet for each race class in Google Sheets.</li>
+                <ul>
+                    <li>The spreadsheet should only have two columns: <b>Player names</b> and <b>Car count</b>.</li>
+                        <ul>
+                            <li><a href="./Example.csv" download>Download an example CSV file.</a></li>
+                            <li><a href="./Example screenshot.png" target="_blank">What the spreadsheet should look like.</a></li>
+                        </ul>
+                </ul>
+            <li>Export the spreadsheet from Google Sheets as a <b>CSV file</b>. Save the file to your device.</li>
+            <li>Click the <b>Import CSV</b> button below to import a CSV file. Once imported, the brackets will appear at the bottom of the page.</li>
+            <li>Inspect the brackets. Manually edit each cell as needed.</li>
             <li>Enter the name of the race class below.</li>
-            <li>Print or screenshot this page to save the brackets.</li>
-            <li>Repeat until all race classes have been filled.</li>
+            <li>Print page to save the brackets.</li>
+                <ul>
+                    <li><b>On laptop: </b> Hit Ctrl+P to print the page, and save the web page as a PDF.</li> 
+                    <li><b>On tablet: </b> Hit the Share button in Chrome to save the web page as a PDF.</li>
+                </ul>
+            <li>Repeat steps 1~5 until all race classes have been saved as PDFs.</li>
+            <li>Upload all the PDFs to a Google Drive folder for the month's race.</li>
+            <li>Share the folder to the committee.</li>
         </ol>
     </div>
 </div>
 <hr>
 <div>
+    <div style="text-align:center">
+        <button onclick="fileSelect()" style="font-size:20px;text-align:center;background-color: #C9F2C9">Import CSV</button>
+    </div>
     <p style="text-align: center">
         <b>Race Class:</b>
     </p>
@@ -86,9 +104,6 @@
         </p>
         <p id="track" style="display:inline">
         </p>
-    </div>
-    <div style="text-align:center">
-        <button onclick="fileSelect()" style="font-size:20px;text-align:center;background-color: #C9F2C9">Click to import CSV</button>
     </div>
     <br>
 </div>
