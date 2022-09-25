@@ -219,6 +219,10 @@ function countCars(arrayData){
   return carsTotal;
 }
 
+function randomIntFromInterval(min, max) { // min and max included 
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
 function createBracket(content){
   // Extract CSV data as an array.
   let arrData = CSVToArray(content);
@@ -247,6 +251,7 @@ function createBracket(content){
 
   // Determine the number of brackets
   var totalBrackets = Math.ceil(carsTotal/16);
+  document.getElementById("pageNumber").innerHTML = `${totalBrackets}`;
 
   // Array to contain all brackets
   var brackets = [];
@@ -313,7 +318,7 @@ function createBracket(content){
 
   // Randomize the bracket before shuffling. Otherwise players will face the same opponents every time.
   for (let i = 0; i < brackets.length; i++) {
-    for (let j = 0; j < brackets[i].length - 1; j++) {
+    for (let j = 0; j < brackets[i].length; j++) {
       const k = Math.floor(Math.random() * (j + 1));
       [ brackets[i][j], brackets[i][k] ] = [ brackets[i][k], brackets[i][j] ];
     }
@@ -321,6 +326,7 @@ function createBracket(content){
 
   // Check every other player for match conflicts. 
   for (let i = 0; i < brackets.length; i++) {
+    console.log(brackets[i]);
     // Iterate every other player and check the next player.
     for (let j = 0; j < brackets[i].length - 1; j++) {
       if (j % 2 != 0){
@@ -330,8 +336,8 @@ function createBracket(content){
         // If there's a match, swap the current player with last player.
         if (brackets[i][j] == brackets[i][j + 1]) {
           if (j + 1 < brackets[i].length) {
-            [ brackets[i][j + 1], brackets[i][brackets[i].length-1] ] = [ brackets[i][brackets[i].length-1], brackets[i][j + 1] ];
-          }        
+            [ brackets[i][j + 1], brackets[i][brackets[i].length - 1] ] = [ brackets[i][brackets[i].length - 1], brackets[i][j + 1] ];
+          }
         }
       }
     }
