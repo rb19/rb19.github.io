@@ -324,6 +324,35 @@ function createBracket(content){
     }
   }
 
+  // Sort out all odd pages so there is a maximum of 1 page with odd numbers.
+  const oddPages = [];
+  for (let i = 0; i < brackets.length; i++) {
+    if (brackets[i].length % 2 == 0){
+      continue;
+    }
+    else{
+      oddPages.push(i);
+      console.log(i);
+      //brackets[i].push(brackets[i].pop());
+      }
+  }
+  console.log(oddPages);
+  for (let i = 0; i < oddPages.length; i++){
+    if (i % 2 != 0){
+      continue;
+    }
+    else {
+      if (brackets[i+1].length % 2 == 0){
+        continue;
+      }
+      else{
+        brackets[i].push(brackets[i+1].pop());
+      }
+    }
+  }
+
+  // TODO: Add a lane check.
+
   // Check every other player for match conflicts. 
   for (let i = 0; i < brackets.length; i++) {
     console.log(brackets[i]);
