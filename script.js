@@ -316,58 +316,34 @@ function createBracket(content){
     brackets[i % brackets.length].push(remainderBucket[i]);
   }
 
+  // Sort out all odd pages so there is a maximum of 1 page with odd numbers.
+  for (let i = 0; i < brackets.length - 1; i++) {
+    if (brackets[i].length % 2 == 0){
+      continue;
+    }
+    else if (brackets[i].length % 2 != 0 && brackets[i+1].length % 2 != 0) {
+      // Remove player from next bracket and add to current bracket.
+      // Odd numbered page means it's never >16, so this will always work.
+      brackets[i].push(brackets[i+1].pop());
+    }
+  }
+
   // Randomize the bracket before shuffling. Otherwise players will face the same opponents every time.
   for (let i = 0; i < brackets.length; i++) {
-    for (let j = 0; j < brackets[i].length; j++) {
-      const k = Math.floor(Math.random() * (j + 1));
+    for (let j = 0; j < brackets[i].length - 1; j++) {
+      const k = randomIntFromInterval(0,brackets[i].length-1);
       [ brackets[i][j], brackets[i][k] ] = [ brackets[i][k], brackets[i][j] ];
     }
   }
 
-  // Sort out all odd pages so there is a maximum of 1 page with odd numbers.
-  const oddPages = [];
-  for (let i = 0; i < brackets.length; i++) {
-    if (brackets[i].length % 2 == 0){
-      continue;
-    }
-    else{
-      oddPages.push(i);
-      console.log(i);
-      //brackets[i].push(brackets[i].pop());
-      }
-  }
-  console.log(oddPages);
-  for (let i = 0; i < oddPages.length; i++){
-    if (i % 2 != 0){
-      continue;
-    }
-    else {
-      if (brackets[i+1].length % 2 == 0){
-        continue;
-      }
-      else{
-        brackets[i].push(brackets[i+1].pop());
-      }
-    }
-  }
-
-  // TODO: Add a lane check.
-
   // Check every other player for match conflicts. 
   for (let i = 0; i < brackets.length; i++) {
-    console.log(brackets[i]);
     // Iterate every other player and check the next player.
-    for (let j = 0; j < brackets[i].length - 1; j++) {
-      if (j % 2 != 0){
-        continue;
-      }
-      else {
-        // If there's a match, swap the current player with last player.
-        if (brackets[i][j] == brackets[i][j + 1]) {
-          if (j + 1 < brackets[i].length) {
-            [ brackets[i][j + 1], brackets[i][brackets[i].length - 1] ] = [ brackets[i][brackets[i].length - 1], brackets[i][j + 1] ];
-          }
-        }
+    for (let j = 0; j < brackets[i].length - 1; j+=2) {
+      // If there's a match, swap the current player with another random player and make sure it doesn't match.
+      while (brackets[i][j] == brackets[i][j + 1]) {
+        let k = randomIntFromInterval(0,brackets[i].length-1);
+        [ brackets[i][j + 1], brackets[i][k] ] = [ brackets[i][k], brackets[i][j + 1] ];
       }
     }
   }
