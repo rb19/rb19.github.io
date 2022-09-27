@@ -1,8 +1,8 @@
-function fileParser(input){
+function fileParser(input) {
 
-  input.onchange = e => { 
+  input.onchange = e => {
     // Set up file reference
-    var file = e.target.files[0]; 
+    var file = e.target.files[0];
 
     // Set up the FileReader API
     let csvReader = new FileReader();
@@ -12,7 +12,7 @@ function fileParser(input){
     csvReader.onload = readerEvent => {
       // The raw CSV data as an arary
       var content = readerEvent.target.result;
-      
+
       // This returns the brackets for each page.
       let data = createBracket(content);
 
@@ -40,7 +40,7 @@ function fileParser(input){
             pageHeader.setAttribute("colspan", "2");
 
             // Make the Page header here, where Page is i+1.
-            const pageHeaderText = document.createTextNode(`Page ${i +1}`);
+            const pageHeaderText = document.createTextNode(`Page ${i + 1}`);
 
             // Append header into the row.
             pageHeader.appendChild(pageHeaderText);
@@ -75,11 +75,11 @@ function fileParser(input){
             const playerCell = document.createElement("td");
             // Create input element to make editable cell containing player name.
             var input = document.createElement("input");
-            
+
             // Create a text node for each position where the position is j-1 
             const positionText = document.createTextNode(`${j - 1}`);
             // Set player name for element j-2 since j starts 2 positions ahead due to headers.
-            const playerText = data[i][j-2];
+            const playerText = data[i][j - 2];
 
             // Set input fields to be text containing the player names.
             input.setAttribute('type', 'text');
@@ -119,7 +119,7 @@ function fileParser(input){
             // LOG: Print position # and that no player exists
             // console.log("Position # " + j + " NO PLAYER!");
           }
-          
+
           // Append the created row into the table, then loop.
           tbl.appendChild(row);
         }
@@ -135,24 +135,24 @@ function fileParser(input){
 
 // Function inspired by https://stackoverflow.com/questions/1293147/how-to-parse-csv-data
 // Original method found in https://www.bennadel.com/blog/1504-ask-ben-parsing-csv-strings-with-javascript-exec-regular-expression-command.htm
-function CSVToArray( strData, strDelimiter ){
+function CSVToArray(strData, strDelimiter) {
   // Check to see if the delimiter is defined. If not, then default to comma.
   strDelimiter = (strDelimiter || ",");
 
   // Create a regular expression to parse the CSV values.
   var objPattern = new RegExp(
-      (
-          // Delimiters.
-          "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+    (
+      // Delimiters.
+      "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
 
-          // Quoted fields.
-          "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+      // Quoted fields.
+      "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
 
-          // Standard fields.
-          "([^\\" + strDelimiter + "\\r\\n]*))"
-      ),
-      "gi"
-    );
+      // Standard fields.
+      "([^\\" + strDelimiter + "\\r\\n]*))"
+    ),
+    "gi"
+  );
 
   // Create an array to hold the CSV data. The first subarray is empty by default.
   var arrData = [[]];
@@ -161,45 +161,45 @@ function CSVToArray( strData, strDelimiter ){
   var arrMatches = null;
 
   // Keep looping over the regular expression matches until a match is no longer found.
-  while (arrMatches = objPattern.exec( strData )){
+  while (arrMatches = objPattern.exec(strData)) {
 
     // Get the delimiter that was found.
-    var strMatchedDelimiter = arrMatches[ 1 ];
+    var strMatchedDelimiter = arrMatches[1];
 
     // Check to see if the given delimiter has a length (is not the start of string) and if it matches field delimiter. 
     // If it does not, then we know that this delimiter is a row delimiter.
     if (
-        strMatchedDelimiter.length &&
-        strMatchedDelimiter !== strDelimiter
-        ){
+      strMatchedDelimiter.length &&
+      strMatchedDelimiter !== strDelimiter
+    ) {
 
-        // Since we have reached a new row of data, add an empty row to our data array.
-        arrData.push( [] );
+      // Since we have reached a new row of data, add an empty row to our data array.
+      arrData.push([]);
     }
 
     var strMatchedValue;
 
     // Now that we have our delimiter out of the way, let's check to see which kind of value we captured (quoted or unquoted).
-    if (arrMatches[ 2 ]){
+    if (arrMatches[2]) {
 
-        // We found a quoted value. When we capture this value, unescape any double quotes.
-        strMatchedValue = arrMatches[ 2 ].replace(
-            new RegExp( "\"\"", "g" ),
-            "\""
-            );
+      // We found a quoted value. When we capture this value, unescape any double quotes.
+      strMatchedValue = arrMatches[2].replace(
+        new RegExp("\"\"", "g"),
+        "\""
+      );
 
     } else {
 
-        // We found a non-quoted value.
-        strMatchedValue = arrMatches[ 3 ];
+      // We found a non-quoted value.
+      strMatchedValue = arrMatches[3];
 
     }
 
     // Now that we have our value string, let's add it to the data array.
-    arrData[ arrData.length - 1 ].push( strMatchedValue );
+    arrData[arrData.length - 1].push(strMatchedValue);
   }
 
-  return( arrData );
+  return (arrData);
 }
 
 function isInt(n) {
@@ -210,11 +210,11 @@ function isFloat(n) {
   return n % 1 !== 0;
 }
 
-function countCars(arrayData){
+function countCars(arrayData) {
   let carsTotal = 0;
   for (let i = 1; i < arrayData.length; i++) {
     num = parseInt(arrayData[i][1]);
-    carsTotal = carsTotal + num; 
+    carsTotal = carsTotal + num;
   }
   return carsTotal;
 }
@@ -223,20 +223,27 @@ function randomIntFromInterval(min, max) { // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-function createBracket(content){
+function createBracket(content) {
   // Extract CSV data as an array.
   let arrData = CSVToArray(content);
-  
+
+  // Collect every player name
+  var playerData = [];
+  for (let i = 1; i < arrData.length; i++) {
+    playerData.push(arrData[i][0]);
+  }
+  console.log(playerData);
+
   // Determine total number of cars.
   carsTotal = countCars(arrData);
 
   // Check if cars is NaN. This checks for empty cells and/or rows and stops if file is bad.
-  if (isNaN(carsTotal)){
+  if (isNaN(carsTotal)) {
     alert('ERROR! There is an empty cell/row, or the data is invalid. Check the selected CSV file and try again.');
   }
 
   // Determine if using a 2 lane or 4 lane.
-  if (carsTotal > 200){
+  if (carsTotal > 200) {
     // LOG: Print which lane to use.
     // console.log('Use the 4 wide lane track.')
     document.getElementById("track").innerHTML = "4 lane track";
@@ -250,18 +257,18 @@ function createBracket(content){
   }
 
   // Determine the number of brackets
-  var totalBrackets = Math.ceil(carsTotal/16);
+  var totalBrackets = Math.ceil(carsTotal / 16);
   document.getElementById("pageNumber").innerHTML = `${totalBrackets}`;
 
   // Array to contain all brackets
   var brackets = [];
 
   // Create a bracket based on the number of brackets needed.
-  for (i = 0; i < totalBrackets; i++){
+  for (i = 0; i < totalBrackets; i++) {
     const bracket = [];
     brackets.push(bracket);
   }
- 
+
   // Arrays for int, float, and remainder results.
   // This will be used to organize players evenly.
   const intBucket = [];
@@ -276,28 +283,28 @@ function createBracket(content){
     const playerCars = parseInt(arrData[i][1]);
 
     // Ratio of cars to brackets
-    var carRatio = playerCars/totalBrackets;
+    var carRatio = playerCars / totalBrackets;
 
-    if (isInt(carRatio)){
+    if (isInt(carRatio)) {
       // If the ratio is even, it means that the player can distribute a divisble number of cars
       // to each bracket. These players get pushed to the intBucket so they can be pushed to each bracket later.
-      for (j = 0; j < carRatio; j++){
+      for (j = 0; j < carRatio; j++) {
         intBucket.push(playerName);
       }
     }
-    else if(isFloat(carRatio)){
+    else if (isFloat(carRatio)) {
       // Get quotients from each player.
-      const quotient = Math.floor(playerCars/totalBrackets);
+      const quotient = Math.floor(playerCars / totalBrackets);
       // Get the remainder to push later.
-      const remainder = playerCars%totalBrackets;
+      const remainder = playerCars % totalBrackets;
       // Push the rounded down number to each bracket for the same reason as above.
-      for (j = 0; j < quotient; j++){
+      for (j = 0; j < quotient; j++) {
         floatBucket.push(playerName);
       }
       // Push remaining players in a separate array to push later.
-      for (k = 0; k < remainder; k++){
+      for (k = 0; k < remainder; k++) {
         remainderBucket.push(playerName);
-      } 
+      }
     }
     else {
       alert('ERROR! Something went wrong!');
@@ -305,80 +312,147 @@ function createBracket(content){
   }
 
   // Iterate through each bracket and push int/float buckets into each bracket.
-  for (k = 0; k < brackets.length; k++){
+  for (k = 0; k < brackets.length; k++) {
     brackets[k].push(...intBucket);
     brackets[k].push(...floatBucket);
   }
 
   // Push remainder bucket into brackets.
   // This has to be done separately because we want to iterate through the remaining players instead of the actual brackets.
-  for (let i = 0; i < remainderBucket.length; i++){
+  for (let i = 0; i < remainderBucket.length; i++) {
     brackets[i % brackets.length].push(remainderBucket[i]);
+  }
+
+  // Sort out all odd pages so there is a maximum of 1 page with odd numbers.
+  for (let i = 0; i < brackets.length - 1; i++) {
+    if (brackets[i].length % 2 == 0) {
+      continue;
+    }
+    else if (brackets[i].length % 2 != 0 && brackets[i + 1].length % 2 != 0) {
+      // Remove player from next bracket and add to current bracket.
+      // Odd numbered page means it's never >16, so this will always work,
+      // but make sure this only runs if the current bracket length is <= 16.
+      while (brackets[i].length <= 16) {
+        brackets[i].push(brackets[i + 1].pop());
+      }
+    }
   }
 
   // Randomize the bracket before shuffling. Otherwise players will face the same opponents every time.
   for (let i = 0; i < brackets.length; i++) {
-    for (let j = 0; j < brackets[i].length; j++) {
-      const k = Math.floor(Math.random() * (j + 1));
-      [ brackets[i][j], brackets[i][k] ] = [ brackets[i][k], brackets[i][j] ];
+    for (let j = 0; j < brackets[i].length - 1; j++) {
+      const k = randomIntFromInterval(0, brackets[i].length - 1);
+      [brackets[i][j], brackets[i][k]] = [brackets[i][k], brackets[i][j]];
     }
   }
 
-  // Sort out all odd pages so there is a maximum of 1 page with odd numbers.
-  const oddPages = [];
-  for (let i = 0; i < brackets.length; i++) {
-    if (brackets[i].length % 2 == 0){
-      continue;
-    }
-    else{
-      oddPages.push(i);
-      console.log(i);
-      //brackets[i].push(brackets[i].pop());
-      }
-  }
-  console.log(oddPages);
-  for (let i = 0; i < oddPages.length; i++){
-    if (i % 2 != 0){
-      continue;
-    }
-    else {
-      if (brackets[i+1].length % 2 == 0){
-        continue;
-      }
-      else{
-        brackets[i].push(brackets[i+1].pop());
-      }
-    }
-  }
-
-  // TODO: Add a lane check.
+  // Count odds/evens
+  // const odds = {};
+  // const evens = {};
+  // for (let i = 0; i < brackets.length; i++) {
+  //   for (let j = 0; j < brackets[i].length - 1; j++) {
+  //     const player = brackets[i];
+  //     if (j % 2 == 0) {
+  //       evens[player] += 1;
+  //     }
+  //     else if (j % 2 != 0) {
+  //       odds[player] += 1;
+  //     }
+  //     else {
+  //       continue;
+  //     }
+  //   }
+  // }
 
   // Check every other player for match conflicts. 
   for (let i = 0; i < brackets.length; i++) {
-    console.log(brackets[i]);
     // Iterate every other player and check the next player.
-    for (let j = 0; j < brackets[i].length - 1; j++) {
-      if (j % 2 != 0){
-        continue;
-      }
-      else {
-        // If there's a match, swap the current player with last player.
-        if (brackets[i][j] == brackets[i][j + 1]) {
-          if (j + 1 < brackets[i].length) {
-            [ brackets[i][j + 1], brackets[i][brackets[i].length - 1] ] = [ brackets[i][brackets[i].length - 1], brackets[i][j + 1] ];
-          }
-        }
+    for (let j = 0; j < brackets[i].length - 1; j += 2) {
+      // If there's a match, swap the current player with another random player and make sure it doesn't match.
+      while (brackets[i][j] == brackets[i][j + 1]) {
+        let k = randomIntFromInterval(0, brackets[i].length - 1);
+        [brackets[i][j + 1], brackets[i][k]] = [brackets[i][k], brackets[i][j + 1]];
       }
     }
   }
+
+  // const odds = {};
+  // const evens = {};
+
+  // // In the placement loop, assuming i is the index of where in the bracket they are being place and name is a string
+  // if (i % 2 === 0) {
+  //   evens[name] = evens[name] ? evens[name] + 1 : 1;
+  // } else {
+  //   odds[name] = odds[name] ? odds[name] + 1 : 1;
+  // }
+
+  // TODO: Add a lane check.
+  var laneCount = [];
+  for (let i = 0; i < playerData.length; i++) {
+    var playerCount = [];
+    // TEST: Puts player name in first element. Remove when no longer needed.
+    playerCount.push(playerData[i]);
+    for (let j = 0; j < brackets.length; j++) {
+      var oddLane = 0;
+      var evenLane = 0;
+      for (let k = 0; k < brackets[j].length; k++) {
+        if (playerData[i] == brackets[j][k]) {
+          if (k % 2 == 0) {
+            evenLane++;
+          }
+          else if (k % 2 != 0) {
+            oddLane++;
+          }
+        }
+      }
+      // TEST: Counts will be [odd, even]
+      playerCount.push([oddLane, evenLane]);
+    }
+    // TEST: Log the count array
+    console.log(playerCount);
+    laneCount.push(playerCount);
+  }
+  // TEST: Print all counts for all players
+  console.log(laneCount);
+
+  for (let i = 1; i < laneCount.length; i++) {
+    var oddCount = 0;
+    var evenCount = 0;
+    for (let j = 0; j < laneCount[i].length; j++) {
+      if (laneCount[i][j][0]) {
+        oddCount++;
+      }
+      if (laneCount[i][j][1]) {
+        evenCount++;
+      }
+    }
+    if (oddCount > evenCount + 2) {
+      console.log(`${laneCount[i][0]} has more ODDs!`);
+    }
+    else if (evenCount > oddCount + 2) {
+      console.log(`${laneCount[i][0]} has more EVENs!`);
+    }
+    else {
+      console.log(`${laneCount[i][0]} IS OK!`);
+      //continue;
+    }
+    // TEST: Prints all odd/even counts for each player
+    console.log("PLAYER:");
+    console.log(laneCount[i][0]);
+    console.log("ODD COUNT:");
+    console.log(oddCount);
+    console.log("EVEN COUNT:");
+    console.log(evenCount);
+  }
+
 
   // LOG: Print the number of cars.
   console.log('Number of cars: ' + carsTotal);
   // LOG: Print number of brackets
   console.log('Number of brackets: ' + totalBrackets);
   // LOG: Print number of competitors
-  console.log ('Number of competitors: ' + arrData.length);
-  
+  console.log('Number of competitors: ' + arrData.length);
+
   return brackets;
 }
 
