@@ -226,6 +226,13 @@ function randomIntFromInterval(min, max) { // min and max included
 function createBracket(content){
   // Extract CSV data as an array.
   let arrData = CSVToArray(content);
+
+  // Collect every player name
+  var playerData = [];
+  for (let i = 1; i < arrData.length; i++){
+    playerData.push(arrData[i][0]);
+  }
+  console.log(playerData);
   
   // Determine total number of cars.
   carsTotal = countCars(arrData);
@@ -347,6 +354,63 @@ function createBracket(content){
       }
     }
   }
+
+  // TODO: Add a lane check.
+  var laneCount = [];
+  for (let i = 0; i < playerData.length; i++) {
+    var playerCount = [];
+    // TEST: Puts player name in first element. Remove when no longer needed.
+    playerCount.push(playerData[i]);
+    for (let j = 0; j < brackets.length; j++) {
+      var oddLane = 0;
+      var evenLane = 0;
+      for (let k = 0; k < brackets[j].length; k++){
+        if (playerData[i] == brackets[j][k]) {
+          if (k % 2 == 0) {
+            evenLane++;
+          }
+          else if (k % 2 != 0) {
+            oddLane++;
+          }
+        }
+      }
+      // TEST: Counts will be [odd, even]
+      playerCount.push([oddLane,evenLane]);
+    }
+    // TEST: Log the count array
+    console.log(playerCount);
+    laneCount.push(playerCount);
+  }
+  // TEST: Print all counts for all players
+  console.log(laneCount);
+
+  for (let i = 1; i < laneCount.length; i++) {
+    var oddCount = 0;
+    var evenCount = 0;
+    for (let j = 0; j < laneCount[i].length; j++) {
+      if(laneCount[i][j][0]){
+        oddCount++;
+      }
+      if(laneCount[i][j][1]){
+        evenCount++;
+      }
+    }
+    if (oddCount < (evenCount + 2) || (oddCount + 2) > evenCount) {
+      console.log(`${laneCount[i][0]} needs redistribution!`);
+    }
+    else {
+      console.log(`${laneCount[i][0]} IS OK!`);
+      continue;
+    }
+    // TEST: Prints all odd/even counts for each player
+    console.log("PLAYER:");
+    console.log(laneCount[i][0]);
+    console.log("ODD COUNT:");
+    console.log(oddCount);
+    console.log("EVEN COUNT:");
+    console.log(evenCount);
+  }
+
 
   // LOG: Print the number of cars.
   console.log('Number of cars: ' + carsTotal);
