@@ -219,7 +219,7 @@ function countCars(arrayData) {
   return carsTotal;
 }
 
-function randomIntFromInterval(min, max) { // min and max included 
+function randomIntFromInterval(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
@@ -332,7 +332,7 @@ function createBracket(content) {
       // Remove player from next bracket and add to current bracket.
       // Odd numbered page means it's never >16, so this will always work,
       // but make sure this only runs if the current bracket length is <= 16.
-      while (brackets[i].length <= 16) {
+      if (brackets[i].length <= 16) {
         brackets[i].push(brackets[i + 1].pop());
       }
     }
@@ -364,9 +364,14 @@ function createBracket(content) {
   //   }
   // }
 
+  // const oddCount = {};
+  // const evenCount = {};
   // Check every other player for match conflicts. 
   for (let i = 0; i < brackets.length; i++) {
     // Iterate every other player and check the next player.
+    var oddLane = 0;
+    var evenLane = 0;
+    var balance = {};
     for (let j = 0; j < brackets[i].length - 1; j += 2) {
       // If there's a match, swap the current player with another random player and make sure it doesn't match.
       while (brackets[i][j] == brackets[i][j + 1]) {
@@ -374,6 +379,39 @@ function createBracket(content) {
         [brackets[i][j + 1], brackets[i][k]] = [brackets[i][k], brackets[i][j + 1]];
       }
     }
+    // Count the even/odd lanes of each player.
+    for (let j = 0; j < brackets[i].length - 1; j ++) {
+      //if (!balance.includes(brackets[i][j])){
+      if (!(brackets[i][j] in balance)) {
+        if (j % 2 == 0){
+          oddLane++;
+        }
+        else if (j % 2 != 0){
+          evenLane++;
+        }
+        balance[brackets[i][j]] = [oddLane,evenLane];
+      }
+      else if (brackets[i][j] in balance) {
+        // For odd positions...
+        if (j % 2 == 0){
+          balance[brackets[i][j]] = [oddLane++,evenLane];
+        }
+        // For even positions...
+        else if (j % 2 != 0){
+          balance[brackets[i][j]] = [oddLane,evenLane++];
+        }
+      }
+      // if (j == brackets[i].length - 2){
+
+      // }  
+    }
+    console.log("BALANCE:");
+    console.log(balance);
+
+    // Balance even/odd lane players
+    for (let j = 0; j < brackets[i].length; j++) {
+      
+    } 
   }
 
   // const odds = {};
@@ -387,63 +425,74 @@ function createBracket(content) {
   // }
 
   // TODO: Add a lane check.
-  var laneCount = [];
-  for (let i = 0; i < playerData.length; i++) {
-    var playerCount = [];
-    // TEST: Puts player name in first element. Remove when no longer needed.
-    playerCount.push(playerData[i]);
-    for (let j = 0; j < brackets.length; j++) {
-      var oddLane = 0;
-      var evenLane = 0;
-      for (let k = 0; k < brackets[j].length; k++) {
-        if (playerData[i] == brackets[j][k]) {
-          if (k % 2 == 0) {
-            evenLane++;
-          }
-          else if (k % 2 != 0) {
-            oddLane++;
-          }
-        }
-      }
-      // TEST: Counts will be [odd, even]
-      playerCount.push([oddLane, evenLane]);
-    }
-    // TEST: Log the count array
-    console.log(playerCount);
-    laneCount.push(playerCount);
-  }
-  // TEST: Print all counts for all players
-  console.log(laneCount);
+  // var laneCount = [];
+  // for (let i = 0; i < playerData.length; i++) {
+  //   var playerCount = [];
+  //   // TEST: Puts player name in first element. Remove when no longer needed.
+  //   playerCount.push(playerData[i]);
+  //   var playerPosition = [];
+  //   for (let j = 0; j < brackets.length; j++) {
+  //     var oddLane = 0;
+  //     var evenLane = 0;
+  //     //var pageNumber = j + 1;
+  //     for (let k = 0; k < brackets[j].length; k++) {
+  //       if (playerData[i] == brackets[j][k]) {
+  //         //const playerPosition = (element) => element == playerData[i];
+  //         //const pagePosition = brackets[i].findIndex(playerPosition);
+  //         if (k % 2 == 0) {
+  //           evenLane++;
+  //           //playerPosition.push(pageNumber,pagePosition, 'even');
+  //         }
+  //         else if (k % 2 != 0) {
+  //           oddLane++;
+  //           //playerPosition.push(pageNumber,pagePosition, 'odd');
+  //         }
+  //       }
+  //     }
+  //     // TEST: Counts will be [odd, even]
+  //     playerCount.push([oddLane, evenLane]);
+  //   }
+  //   // TEST: Log the count array
+  //   console.log(playerCount);
+  //   laneCount.push(playerCount);
+  // }
+  // // TEST: Print all counts for all players
+  // console.log(laneCount);
 
-  for (let i = 1; i < laneCount.length; i++) {
-    var oddCount = 0;
-    var evenCount = 0;
-    for (let j = 0; j < laneCount[i].length; j++) {
-      if (laneCount[i][j][0]) {
-        oddCount++;
-      }
-      if (laneCount[i][j][1]) {
-        evenCount++;
-      }
-    }
-    if (oddCount > evenCount + 2) {
-      console.log(`${laneCount[i][0]} has more ODDs!`);
-    }
-    else if (evenCount > oddCount + 2) {
-      console.log(`${laneCount[i][0]} has more EVENs!`);
-    }
-    else {
-      console.log(`${laneCount[i][0]} IS OK!`);
-      //continue;
-    }
-    // TEST: Prints all odd/even counts for each player
-    console.log("PLAYER:");
-    console.log(laneCount[i][0]);
-    console.log("ODD COUNT:");
-    console.log(oddCount);
-    console.log("EVEN COUNT:");
-    console.log(evenCount);
-  }
+  // var imbalancedPlayers = {};
+
+  // for (let i = 1; i < laneCount.length; i++) {
+  //   var oddCount = 0;
+  //   var evenCount = 0;
+  //   for (let j = 0; j < laneCount[i].length; j++) {
+  //     if (laneCount[i][j][0]) {
+  //       oddCount++;
+  //     }
+  //     if (laneCount[i][j][1]) {
+  //       evenCount++;
+  //     }
+  //   }
+  //   if (oddCount > evenCount + 1) {
+  //     console.log(`${laneCount[i][0]} has more ODDs!`);
+  //     imbalancedPlayers[laneCount[i][0]] = ['odd', oddCount, evenCount];
+  //   }
+  //   else if (evenCount > oddCount + 1) {
+  //     console.log(`${laneCount[i][0]} has more EVENs!`);
+  //     imbalancedPlayers[laneCount[i][0]] = ['even', oddCount, evenCount];
+  //   }
+  //   //else {
+  //     //console.log(`${laneCount[i][0]} IS OK!`);
+  //     //continue;
+  //   //}
+  //   // TEST: Prints all odd/even counts for each player
+  //   // console.log("PLAYER:");
+  //   // console.log(laneCount[i][0]);
+  //   // console.log("ODD COUNT:");
+  //   // console.log(oddCount);
+  //   // console.log("EVEN COUNT:");
+  //   // console.log(evenCount);
+  // }
+  // console.log(imbalancedPlayers);
 
 
   // LOG: Print the number of cars.
