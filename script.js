@@ -1,9 +1,5 @@
 function fileParser(input) {
 
-  // // Set the class name based on the first cell of the CSV.
-  // let arrData = CSVToArray(content);
-  // document.getElementById("raceClass").innerHTML = arrData[0][0];
-
   input.onchange = e => {
     // Set up file reference
     var file = e.target.files[0];
