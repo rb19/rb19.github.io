@@ -369,9 +369,22 @@ function createBracket(content) {
       // If there's a match, swap the current player with another random player and make sure it doesn't match.
       while (brackets[i][j] == brackets[i][j + 1]) {
         let k = randomIntFromInterval(0, brackets[i].length - 1);
-        [brackets[i][j + 1], brackets[i][k]] = [brackets[i][k], brackets[i][j + 1]];
+        while (brackets[i][k] != brackets[i][j + 1]){
+          let k = randomIntFromInterval(0, brackets[i].length - 1);
+          [brackets[i][j + 1], brackets[i][k]] = [brackets[i][k], brackets[i][j + 1]];
+        }
       }
     }
+  }
+
+
+  // Eliminate Round 2 conflicts.
+  for (let i = 0; i < brackets.length; i++) {
+    var firstQuarter = brackets[i].slice(0,4);
+    var secondQuarter = brackets[i].slice(4,8);
+    var thirdQuarter = brackets[i].slice(8,11);
+    var fourthQuarter = brackets[i].slice(12,16);
+
   }
 
   // LOG: Print the number of cars.
