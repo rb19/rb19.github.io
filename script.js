@@ -10,20 +10,29 @@ function fileParser(input) {
 
     // Tell csvReader to spit out contents.
     csvReader.onload = readerEvent => {
-      // The raw CSV data as an arary
+      // The raw CSV data as an array
       var content = readerEvent.target.result;
 
       // This returns the brackets for each page.
       let data = createBracket(content);
+
+      // Calling this again to get the race class name.
+      let arrData = CSVToArray(content);
 
       // Clear previous tables if any exist.
       document.getElementById("brackets").innerHTML = "";
 
       // Iterate through each subarray and generate pages as tables.
       for (i = 0; i < data.length; i++) {
+        // TODO: Try using this to break out pages for print.
+        // var node = document.getElementById("brackets").cloneNode(true);
+        // node.id = "";
 
         // Create a table for every subarray in the array of brackets.
         const tbl = document.createElement("table");
+         // TODO: Try using this to break out pages for print.
+        // tbl.setAttribute("page-break-before","always"); 
+        // tbl.setAttribute("page-break-after","always");
 
         // Iterate through each row to create headers, rows.
         for (j = 0; j < 18; j++) {
@@ -40,7 +49,7 @@ function fileParser(input) {
             pageHeader.setAttribute("colspan", "2");
 
             // Make the Page header here, where Page is i+1.
-            const pageHeaderText = document.createTextNode(`Page ${i + 1}`);
+            const pageHeaderText = document.createTextNode(`${arrData[0][0]}: `+`Page ${i + 1}`);
 
             // Append header into the row.
             pageHeader.appendChild(pageHeaderText);
@@ -224,11 +233,17 @@ function randomIntFromInterval(min, max) { // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
+function raceClass(arrayData) {
+  var raceClass = arrayData[0][0];
+
+  return raceClass;
+}
+
 function createBracket(content) {
   // Extract CSV data as an array.
   let arrData = CSVToArray(content);
 
-  document.getElementById("raceClass").innerHTML = arrData[0][0];
+  document.getElementById("raceClass").innerHTML = raceClass(arrData);
 
   // Collect every player name. Rows 1 and 2 are class name and headers, so ignore them start at i[2].
   var playerData = [];

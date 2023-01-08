@@ -7,6 +7,7 @@
 
 <style>
     input {
+        font-size: 36px;
         text-align: left;
         font-family: 'Roboto', Helvetica, sans-serif;
     }
@@ -18,7 +19,7 @@
     }
 
     td {
-        font-size: 12px;
+        font-size: 36px;
         text-align: center;
         font-family: 'Roboto', Helvetica, sans-serif;
     }
@@ -26,7 +27,7 @@
     td:nth-child(odd) {background-color: #ededed;}
 
     th {
-        font-size: 12px;
+        font-size: 36px;
         text-align: center;
         font-family: 'Roboto', Helvetica, sans-serif;
     }
@@ -49,7 +50,7 @@
 
 </style>
 <div>
-    <input id="fileUpload" type="file" accept=".csv" hidden>
+    <input id="fileUpload"; type="file"; accept=".csv"; hidden>
     <div style="text-align:center">
         <p style="text-justify:interword">This is a bracket generator that will take a CSV file containing player names and number of cars and return the pages with players.</p>
     </div>
@@ -83,9 +84,9 @@
 <hr>
 <div>
     <div style="text-align:center">
-        <button onclick="fileSelect()" style="font-size:20px;text-align:center;background-color: #C9F2C9">Import CSV</button>
+        <button onclick="fileSelect()"; style="font-size:20px;text-align:center;background-color: #C9F2C9">Import CSV</button>
     </div>
-    <p style="text-align: center" style="display:inline-block">
+    <p style="text-align: center"; style="display:inline-block">
         <b>Race Class:</b>
         <b id="raceClass"></b>
     </p>
@@ -100,20 +101,20 @@
         <p style="display:inline-block">
             <b>Number of pages:</b>
         </p>
-        <p id="pageNumber" style="display:inline">
+        <p id="pageNumber"; style="display:inline">
         </p>
     </div>
     <div style="text-align:center">
         <p style="display:inline-block">
             <b>Suggested track to use:</b>
         </p>
-        <p id="track" style="display:inline">
+        <p id="track"; style="display:inline">
         </p>
     </div>
     <br>
 </div>
-<hr>
-<div id="brackets">
-</div>
+<hr page-break-after="always">
+<span id="brackets"; page-break-before="always"; page-break-after="always">
+</span>
 </body>
 </html>
