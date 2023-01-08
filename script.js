@@ -1,5 +1,9 @@
 function fileParser(input) {
 
+  // // Set the class name based on the first cell of the CSV.
+  // let arrData = CSVToArray(content);
+  // document.getElementById("raceClass").innerHTML = arrData[0][0];
+
   input.onchange = e => {
     // Set up file reference
     var file = e.target.files[0];
@@ -212,7 +216,8 @@ function isFloat(n) {
 
 function countCars(arrayData) {
   let carsTotal = 0;
-  for (let i = 1; i < arrayData.length; i++) {
+  // Rows 1 and 2 are class name and headers, so ignore them start at i[2].
+  for (let i = 2; i < arrayData.length; i++) {
     num = parseInt(arrayData[i][1]);
     carsTotal = carsTotal + num;
   }
@@ -227,9 +232,11 @@ function createBracket(content) {
   // Extract CSV data as an array.
   let arrData = CSVToArray(content);
 
-  // Collect every player name
+  document.getElementById("raceClass").innerHTML = arrData[0][0];
+
+  // Collect every player name. Rows 1 and 2 are class name and headers, so ignore them start at i[2].
   var playerData = [];
-  for (let i = 1; i < arrData.length; i++) {
+  for (let i = 2; i < arrData.length; i++) {
     playerData.push(arrData[i][0]);
   }
   console.log(playerData);
