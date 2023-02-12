@@ -49,7 +49,7 @@ function fileParser(input) {
             pageHeader.setAttribute("colspan", "2");
 
             // Make the Page header here, where Page is i+1.
-            const pageHeaderText = document.createTextNode(`${arrData[0][0]}: `+`Page ${i + 1}`);
+            const pageHeaderText = document.createTextNode(`${arrData[0][0]}: `+`Page ${i + 1} of ${Math.ceil(countCars(arrData) / 16)}`);
 
             // Append header into the row.
             pageHeader.appendChild(pageHeaderText);
