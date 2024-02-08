@@ -14,7 +14,8 @@ function fileParser(input) {
       var content = readerEvent.target.result;
 
       // This returns the brackets for each page.
-      let data = createBracket(content);
+      //let data = createBracket(content);
+      let data = newBracket(content);
 
       // Calling this again to get the race class name.
       let arrData = CSVToArray(content);
@@ -239,11 +240,75 @@ function raceClass(arrayData) {
   return raceClass;
 }
 
+// New method
+function playerList(content){
+  let arrData = CSVToArray(content);
+
+  // Collect every player name. Row 1 are headers, so skip to i[1].
+  var playerData = [];
+  for (let i = 1; i < arrData.length; i++) {
+    playerData.push(arrData[i][0]);
+  }
+
+  // A STOCK
+  var aStockCars = [];
+  for (let i = 1; i < arrData.length; i++) {
+    aStockCars.push(arrData[i][1]);
+  }
+  if (playerData.length != aStockCars.length) {
+    alert("WARNING! The data does not match, try again.");
+  }
+
+  var aStockList = [];
+  for (let i = 0; i < playerData.length; i++){
+    if(aStockCars[i] > 0){
+      var playerCar = [];
+      playerCar.push(playerData[i]);
+      playerCar.push(aStockCars[i]);
+      aStockList.push(playerCar);
+    }
+  }
+  console.log("I AM THE A STOCK LIST:");
+  console.log("aStockList: " + aStockList);
+
+  var aStockPlayers = {};
+  for (let i = 0; i< aStockCars.length; i++){
+    // console.log(playerData[i]);
+    // console.log(aStockCars[i]);
+    aStockPlayers[playerData[i]] = aStockCars[i];
+  }
+  console.log("STARTING")
+
+  let aStockBracket = createBracket(aStockList);
+  console.log("aStockBracket: " + aStockBracket);
+
+  // key pair value approach
+  // for (var key in aStockPlayers){
+  //   if (aStockPlayers[key] === ""){
+  //     console.log("HELLO");
+  //     delete aStockPlayers[key];
+  //   }
+  // }
+  // // NOTE: THIS VALIDATES THE PLAYER OBJECT
+  // for (var key in aStockPlayers){
+  //   console.log(key);
+  //   console.log(aStockPlayers[key]);
+  // }
+  
+  //console.log(arrData.length);
+
+  //console.log("Start of playerData: " + playerData);
+
+  console.log("A Stock: " + aStockPlayers);
+
+  //console.log("Raw content: " + arrData);
+
+  return aStockList;
+}
+
 function createBracket(content) {
   // Extract CSV data as an array.
   let arrData = CSVToArray(content);
-
-  document.getElementById("raceClass").innerHTML = raceClass(arrData);
 
   // Collect every player name. Rows 1 and 2 are class name and headers, so ignore them start at i[2].
   var playerData = [];
@@ -258,20 +323,6 @@ function createBracket(content) {
   // Check if cars is NaN. This checks for empty cells and/or rows and stops if file is bad.
   if (isNaN(carsTotal)) {
     alert('ERROR! There is an empty cell/row, or the data is invalid. Check the selected CSV file and try again.');
-  }
-
-  // Determine if using a 2 lane or 4 lane.
-  if (carsTotal > 200) {
-    // LOG: Print which lane to use.
-    // console.log('Use the 4 wide lane track.')
-    document.getElementById("track").innerHTML = "4 lane track";
-    document.getElementById("carCount").innerHTML = `${carsTotal}`;
-  }
-  else {
-    // LOG: Print which lane to use.
-    // console.log('You can use the 2 lane track.')
-    document.getElementById("track").innerHTML = "2 lane track";
-    document.getElementById("carCount").innerHTML = `${carsTotal}`;
   }
 
   // Determine the number of brackets
@@ -384,13 +435,184 @@ function createBracket(content) {
   return brackets;
 }
 
+// function createBracket(content) {
+//   // Extract CSV data as an array.
+//   let arrData = CSVToArray(content);
+
+//   document.getElementById("raceClass").innerHTML = raceClass(arrData);
+
+//   // Collect every player name. Rows 1 and 2 are class name and headers, so ignore them start at i[2].
+//   var playerData = [];
+//   for (let i = 2; i < arrData.length; i++) {
+//     playerData.push(arrData[i][0]);
+//   }
+//   console.log(playerData);
+
+//   // Determine total number of cars.
+//   carsTotal = countCars(arrData);
+
+//   // Check if cars is NaN. This checks for empty cells and/or rows and stops if file is bad.
+//   if (isNaN(carsTotal)) {
+//     alert('ERROR! There is an empty cell/row, or the data is invalid. Check the selected CSV file and try again.');
+//   }
+
+//   // Determine if using a 2 lane or 4 lane.
+//   if (carsTotal > 200) {
+//     // LOG: Print which lane to use.
+//     // console.log('Use the 4 wide lane track.')
+//     document.getElementById("track").innerHTML = "4 lane track";
+//     document.getElementById("carCount").innerHTML = `${carsTotal}`;
+//   }
+//   else {
+//     // LOG: Print which lane to use.
+//     // console.log('You can use the 2 lane track.')
+//     document.getElementById("track").innerHTML = "2 lane track";
+//     document.getElementById("carCount").innerHTML = `${carsTotal}`;
+//   }
+
+//   // Determine the number of brackets
+//   var totalBrackets = Math.ceil(carsTotal / 16);
+//   document.getElementById("pageNumber").innerHTML = `${totalBrackets}`;
+
+//   // Array to contain all brackets
+//   var brackets = [];
+
+//   // Create a bracket based on the number of brackets needed.
+//   for (i = 0; i < totalBrackets; i++) {
+//     const bracket = [];
+//     brackets.push(bracket);
+//   }
+
+//   // Arrays for int, float, and remainder results.
+//   // This will be used to organize players evenly.
+//   const intBucket = [];
+//   const floatBucket = [];
+//   const remainderBucket = [];
+
+//   // i=1 because this assumes the first line is a header.
+//   for (let i = 1; i < arrData.length; i++) {
+//     // Extract player name and number of cars.
+//     const playerName = arrData[i][0];
+//     // parseInt is needed here because CSVtoArray returns strings.
+//     const playerCars = parseInt(arrData[i][1]);
+
+//     // Ratio of cars to brackets
+//     var carRatio = playerCars / totalBrackets;
+
+//     if (isInt(carRatio)) {
+//       // If the ratio is even, it means that the player can distribute a divisble number of cars
+//       // to each bracket. These players get pushed to the intBucket so they can be pushed to each bracket later.
+//       for (j = 0; j < carRatio; j++) {
+//         intBucket.push(playerName);
+//       }
+//     }
+//     else if (isFloat(carRatio)) {
+//       // Get quotients from each player.
+//       const quotient = Math.floor(playerCars / totalBrackets);
+//       // Get the remainder to push later.
+//       const remainder = playerCars % totalBrackets;
+//       // Push the rounded down number to each bracket for the same reason as above.
+//       for (j = 0; j < quotient; j++) {
+//         floatBucket.push(playerName);
+//       }
+//       // Push remaining players in a separate array to push later.
+//       for (k = 0; k < remainder; k++) {
+//         remainderBucket.push(playerName);
+//       }
+//     }
+//     else {
+//       alert('ERROR! Something went wrong!');
+//     }
+//   }
+
+//   // Iterate through each bracket and push int/float buckets into each bracket.
+//   for (k = 0; k < brackets.length; k++) {
+//     brackets[k].push(...intBucket);
+//     brackets[k].push(...floatBucket);
+//   }
+
+//   // Push remainder bucket into brackets.
+//   // This has to be done separately because we want to iterate through the remaining players instead of the actual brackets.
+//   for (let i = 0; i < remainderBucket.length; i++) {
+//     brackets[i % brackets.length].push(remainderBucket[i]);
+//   }
+
+//   // Sort out all odd pages so there is a maximum of 1 page with odd numbers.
+//   for (let i = 0; i < brackets.length - 1; i++) {
+//     if (brackets[i].length % 2 == 0) {
+//       continue;
+//     }
+//     else if (brackets[i].length <= 16 && brackets[i].length % 2 != 0 && brackets[i + 1].length % 2 != 0) {
+//       // Remove player from next bracket and add to current bracket.
+//       // Odd numbered page means it's never >16, so this will always work,
+//       // but make sure this only runs if the current bracket length is <= 16.
+//       brackets[i].push(brackets[i + 1].pop());
+//     }
+//   }
+
+//   // Randomize the bracket before shuffling. Otherwise players will face the same opponents every time.
+//   for (let i = 0; i < brackets.length; i++) {
+//     for (let j = 0; j < brackets[i].length - 1; j++) {
+//       const k = randomIntFromInterval(0, brackets[i].length - 1);
+//       [brackets[i][j], brackets[i][k]] = [brackets[i][k], brackets[i][j]];
+//     }
+//   }
+
+//   // Check every other player for match conflicts. 
+//   for (let i = 0; i < brackets.length; i++) {
+//     // Iterate every other player and check the next player.
+//     for (let j = 0; j < brackets[i].length - 1; j += 2) {
+//       // If there's a match, swap the current player with another random player and make sure it doesn't match.
+//       while (brackets[i][j] == brackets[i][j + 1]) {
+//         let k = randomIntFromInterval(0, brackets[i].length - 1);
+//         [brackets[i][j + 1], brackets[i][k]] = [brackets[i][k], brackets[i][j + 1]];
+//       }
+//     }
+//   }
+
+//   // LOG: Print the number of cars.
+//   console.log('Number of cars: ' + carsTotal);
+//   // LOG: Print number of brackets
+//   console.log('Number of brackets: ' + totalBrackets);
+//   // LOG: Print number of competitors
+//   console.log('Number of competitors: ' + arrData.length);
+
+//   return brackets;
+// }
+
 // This function is called in index.html
 function fileSelect() {
   var input = document.createElement('input');
   input.type = 'file';
 
   // Accepts the CSV file as an input.
-  fileParser(input);
+  //fileParser(input);
+  newParser(input);
 
   input.click();
+}
+
+function newParser(input) {
+
+  input.onchange = e => {
+    // Set up file reference
+    var file = e.target.files[0];
+
+    // Set up the FileReader API
+    let csvReader = new FileReader();
+    csvReader.readAsText(file);
+
+    // Tell csvReader to spit out contents.
+    csvReader.onload = readerEvent => {
+      // The raw CSV data as an array
+      var content = readerEvent.target.result;
+
+      let data = playerList(content);
+      console.log("Hey I made it out! " + data);
+
+      // Calling this again to get the race class name.
+      //let arrData = CSVToArray(content);
+      
+    }
+  }
 }
