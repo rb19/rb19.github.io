@@ -212,13 +212,13 @@ function CSVToArray(strData, strDelimiter) {
   return (arrData);
 }
 
-function isInt(n) {
-  return n % 1 === 0;
-}
+// function isInt(n) {
+//   return n % 1 === 0;
+// }
 
-function isFloat(n) {
-  return n % 1 !== 0;
-}
+// function isFloat(n) {
+//   return n % 1 !== 0;
+// }
 
 function countCars(arrayData) {
   let carsTotal = 0;
@@ -234,11 +234,11 @@ function randomIntFromInterval(min, max) { // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-function raceClass(arrayData) {
-  var raceClass = arrayData[0][0];
+// function raceClass(arrayData) {
+//   var raceClass = arrayData[0][0];
 
-  return raceClass;
-}
+//   return raceClass;
+// }
 
 // New method
 function playerList(content){
@@ -249,73 +249,255 @@ function playerList(content){
   for (let i = 1; i < arrData.length; i++) {
     playerData.push(arrData[i][0]);
   }
+  console.log(playerData);
 
   // A STOCK
-  var aStockCars = [];
+  // var aStockCars = [];
+  // for (let i = 1; i < arrData.length; i++) {
+  //   aStockCars.push(arrData[i][1]);
+  // }
+
+  var aStockCars = []; // j = 1
+  var charityRaceCars = []; // j = 2
+  var featureRaceCars = []; // j = 3
+  var fteHighSpeedWheelCars = []; // j = 4
+  var hotWheelsCars = []; // j = 5
+  var johnnyLightningCars = []; // j = 6
+  var kidsDivisionCars = []; // j = 7
+  var nascarCars = []; // j = 8
+  var ripAndRaceCars = []; // j = 9
+  var stockEliminatorCars = []; // j = 10
+
   for (let i = 1; i < arrData.length; i++) {
     aStockCars.push(arrData[i][1]);
+    charityRaceCars.push(arrData[i][2]);
+    featureRaceCars.push(arrData[i][3]);
+    fteHighSpeedWheelCars.push(arrData[i][4]);
+    hotWheelsCars.push(arrData[i][5]);
+    johnnyLightningCars.push(arrData[i][6]);
+    kidsDivisionCars.push(arrData[i][7]);
+    nascarCars.push(arrData[i][8]);
+    ripAndRaceCars.push(arrData[i][9]);
+    stockEliminatorCars.push(arrData[i][10]);
   }
+
   if (playerData.length != aStockCars.length) {
     alert("WARNING! The data does not match, try again.");
   }
 
-  var aStockList = [];
+  const aStockList = [];
+  const charityRaceList = [];
+  const featureRaceList = [];
+  const fteHighSpeedWheelList = [];
+  const hotWheelsList = [];
+  const johnnyLightningList = [];
+  const kidsDivisionList = [];
+  const nascarList = [];
+  const ripAndRaceList = [];
+  const stockEliminatorList = [];
+
   for (let i = 0; i < playerData.length; i++){
     if(aStockCars[i] > 0){
-      var playerCar = [];
-      playerCar.push(playerData[i]);
-      playerCar.push(aStockCars[i]);
+      const playerCar = [];
+      playerCar.push([playerData[i],aStockCars[i]]);
       aStockList.push(playerCar);
     }
+    if(charityRaceCars[i] > 0){
+      const playerCar = [];
+      playerCar.push([playerData[i],charityRaceCars[i]]);
+      charityRaceList.push(playerCar);
+    }
+    if(featureRaceCars[i] > 0){
+      const playerCar = [];
+      playerCar.push([playerData[i],featureRaceCars[i]]);
+      featureRaceList.push(playerCar);
+    }
+    if(fteHighSpeedWheelCars[i] > 0){ 
+      const playerCar = [];
+      playerCar.push([playerData[i],fteHighSpeedWheelCars[i]]);
+      fteHighSpeedWheelList.push(playerCar);
+    }
+    if(hotWheelsCars[i] > 0){ 
+      const playerCar = [];
+      playerCar.push([playerData[i],hotWheelsCars[i]]);
+      hotWheelsList.push(playerCar);
+    }
+    if(johnnyLightningCars[i] > 0){
+      const playerCar = [];
+      playerCar.push([playerData[i],johnnyLightningCars[i]]);
+      johnnyLightningList.push(playerCar);
+    }
+    if(kidsDivisionCars[i] > 0){
+      const playerCar = [];
+      playerCar.push([playerData[i],kidsDivisionCars[i]]);
+      kidsDivisionList.push(playerCar);
+    }
+    if(nascarCars[i] > 0){
+      const playerCar = [];
+      playerCar.push([playerData[i],nascarCars[i]]);
+      nascarList.push(playerCar);
+    }
+    if(ripAndRaceCars[i] > 0){
+      const playerCar = [];
+      playerCar.push([playerData[i],ripAndRaceCars[i]]);
+      ripAndRaceList.push(playerCar);
+    }
+    if(stockEliminatorCars[i] > 0){
+      const playerCar = [];
+      playerCar.push([playerData[i],stockEliminatorCars[i]]);
+      stockEliminatorList.push(playerCar);
+    }
   }
-  console.log("I AM THE A STOCK LIST:");
-  console.log("aStockList: " + aStockList);
 
-  var aStockPlayers = {};
-  for (let i = 0; i< aStockCars.length; i++){
-    // console.log(playerData[i]);
-    // console.log(aStockCars[i]);
-    aStockPlayers[playerData[i]] = aStockCars[i];
+  var masterList = [];
+  masterList.push(aStockList,charityRaceList,featureRaceList,fteHighSpeedWheelList,hotWheelsList,johnnyLightningList,kidsDivisionList,nascarList,ripAndRaceList,stockEliminatorList)
+
+  console.log("MASTER LIST");
+  console.log(masterList);
+
+  return masterList;
+}
+
+function newAlgorithm(rosterList){
+  // New algorithm should create blocks of 4, create unique matches. Make sure to try and separate from the previous block
+
+  // const rosterList = [["Bob D", 10], ["Cameron Daly", 1], ["Dave A", 10], ["Jaxon K", 10],["johnny O", 10], ["Logan", 10], ["Rapid Ray", 10],["SSea Bass DH", 10], ["Tom C", 6], ["Noah", 3], ["Lex", 1], ["Tom W", 7], ["Jeremy", 3]];
+
+
+  // Determine full length (total cars)
+  let cars = 0
+  for (let i = 0; i < rosterList.length; i++){
+    cars += rosterList[i][1];
   }
-  console.log("STARTING")
+  console.log(cars); // This is the total number of cars
 
-  let aStockBracket = createBracket(aStockList);
-  console.log("aStockBracket: " + aStockBracket);
-
-  // key pair value approach
-  // for (var key in aStockPlayers){
-  //   if (aStockPlayers[key] === ""){
-  //     console.log("HELLO");
-  //     delete aStockPlayers[key];
-  //   }
+  // Create blocks of 4
+  let masterBlock = [];
+  // let block = [];
+  // for (let i = 0; i < 4; i++){
+  //   block[i] = "";
   // }
-  // // NOTE: THIS VALIDATES THE PLAYER OBJECT
-  // for (var key in aStockPlayers){
-  //   console.log(key);
-  //   console.log(aStockPlayers[key]);
-  // }
-  
-  //console.log(arrData.length);
+  const block = new Array(4);
+  let numBlocks = Math.ceil(cars/4);
+  for (let i = 0; i < numBlocks; i++){
+    masterBlock[i] = block;
+  }
 
-  //console.log("Start of playerData: " + playerData);
+  // For each player,
+    //if the number of cars is greater than or equal to the number of blocks -> insert to higher array
+    //if the number of cars is less than the number of blocks -> insert to lower array
+    //The logic for higher array will distribute evenly first, then randomly pick a block, insert, then ignore that block for future inserts
+    //The logic for lower array will randomly pick a block, insert, then ignore that block for future inserts
+  const higherArray = [];
+  const lowerArray = [];
+  for (let i = 0; i < rosterList.length; i++){
+    if(rosterList[i][1] >= masterBlock.length){
+      higherArray.push(rosterList[i]);
+    }
+    if(rosterList[i][1] < masterBlock.length){
+      lowerArray.push(rosterList[i]);
+    }
+  }
+  // For higher array
+    // While the count is non-zero, 
+      // For each player, perform a check to see if block is full, and if player already exists.
+        // If not full, check if player already exists
+          // If doesn't exist, place in random spot in the block, and remove one from count
+        // If does exist, move onto next
+        // If all blocks have been checked and count is still > 0
+          // Randomly select a block
+            // Check if racer is in even or odd
+            // Place additional racer in other slot
+  // For lower array
+    // While the count is non-zero,
+      // Pick a random block to insert to
+        // Do a check to see if block is full, and if player already exists.
+        // If not full, check if player already exists
+          // If doesn't exist, place in random spot in the block, and remove one from count
+        // If does exist, move onto next
+        // If all blocks have been checked and count is still > 0
+          // Randomly select a block
+            // Check if racer is in even or odd
+            // Place additional racer in other slot
+  // Merge the blocks back to together to make a single list
+  // Do a sanity check
+    // Check if there are any empty slots in the list. Throw error if yes
+    // Count the number of entries in the race list, check against the input list. Throw error is mismatch.
+  // Return the list
 
-  console.log("A Stock: " + aStockPlayers);
-
-  //console.log("Raw content: " + arrData);
-
-  return aStockList;
 }
 
 function createBracket(content) {
   // Extract CSV data as an array.
-  let arrData = CSVToArray(content);
+  //let arrData = CSVToArray(content);
+  // Filtered list will be put back in list to return.
+  let raceList = [];
 
-  // Collect every player name. Rows 1 and 2 are class name and headers, so ignore them start at i[2].
-  var playerData = [];
-  for (let i = 2; i < arrData.length; i++) {
-    playerData.push(arrData[i][0]);
-  }
-  console.log(playerData);
+  console.log("HELLO THERE");
+  console.log(content);
+
+  let aStockList = content.shift();
+  console.log("A STOCK:")
+  console.log(aStockList);
+
+  // put list into algorithm, which should return curated list.
+  // Once created, put list into HTML.
+
+  let charityList = content.shift();
+  console.log("CHARITY RACE")
+  console.log(charityList);
+
+  // Put list through algorithm, get the return. store it in the array.
+
+  let featureList = content.shift();
+  console.log("FEATURE RACE")
+  console.log(featureList);  
+
+  // Put list through algorithm, get the return. store it in the array.
+
+  let fteList = content.shift();
+  console.log("FTE RACE")
+  console.log(fteList);
+
+  // Put list through algorithm, get the return. store it in the array.
+
+  let hwList = content.shift();
+  console.log("HW RACE")
+  console.log(hwList);
+  
+  // Put list through algorithm, get the return. store it in the array.
+
+  let jlList = content.shift();
+  console.log("JL RACE")
+  console.log(jlList);
+
+  // Put list through algorithm, get the return. store it in the array.
+
+  let kidsDivisionList = content.shift();
+  console.log("KIDS RACE")
+  console.log(kidsDivisionList);
+
+  // Put list through algorithm, get the return. store it in the array.
+
+  let nascarList = content.shift();
+  console.log("NASCAR RACE")
+  console.log(nascarList);
+
+  // Put list through algorithm, get the return. store it in the array.
+
+  let ripandraceList = content.shift();
+  console.log("RIP AND RACE")
+  console.log(ripandraceList);
+
+  // Put list through algorithm, get the return. store it in the array.
+
+  let stockeliminatorList = content.shift();
+  console.log("STOCK ELIMINATOR RACE")
+  console.log(stockeliminatorList);
+
+  // Put list through algorithm, get the return. store it in the array.
+  
+  // Post stats here
 
   // Determine total number of cars.
   carsTotal = countCars(arrData);
@@ -327,7 +509,7 @@ function createBracket(content) {
 
   // Determine the number of brackets
   var totalBrackets = Math.ceil(carsTotal / 16);
-  document.getElementById("pageNumber").innerHTML = `${totalBrackets}`;
+  //document.getElementById("pageNumber").innerHTML = `${totalBrackets}`;
 
   // Array to contain all brackets
   var brackets = [];
@@ -581,6 +763,7 @@ function createBracket(content) {
 // }
 
 // This function is called in index.html
+
 function fileSelect() {
   var input = document.createElement('input');
   input.type = 'file';
@@ -608,7 +791,9 @@ function newParser(input) {
       var content = readerEvent.target.result;
 
       let data = playerList(content);
-      console.log("Hey I made it out! " + data);
+      let curatedBracket = createBracket(data);
+      console.log("Hey I made it out! ");
+      console.log(data);
 
       // Calling this again to get the race class name.
       //let arrData = CSVToArray(content);
